@@ -9,6 +9,12 @@ import no.hvl.dat102.lenketstabel.StabelADT;
 public class BinaerTre<T> implements BinaerTreADT<T>, Iterable<T> {
 	private BinaerTreNode<T> rot;
 
+	public BinaerTreNode<T> getRot(){
+		return  rot;
+	}
+	public void setRot(BinaerTreNode<T>p) {
+		rot = p;
+	}
 	public BinaerTre() {
 		rot = null;
 	}

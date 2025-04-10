@@ -26,20 +26,71 @@ implements SoeketreADT<T>{
 	
 	@Override
 	public boolean inneholder(T element) {
-		// Blir fylt inn på forelesning
-		return false;
+
+		return finn(element) != null;
 	}
 
 	@Override
 	public T finn(T element) {
-		// Blir fylt inn på forelesning
-		return null;
+		
+		return finn(element,getRot());
 	}
+	private T finn(T element, BinaerTreNode<T>p) {
+		
+		T svar = null;
+		
+		// Basis: p == 0 -> tomt tre, element finns ikke
+		if(p != null) {
+			int sml = element.compareTo(p.getElement());
+			if(sml == 0) {
+				svar = p.getElement();
+			} else if(sml < 0) {
+				svar = finn(element, p.getVenstre());
+			} else {
+				svar = finn(element, p.getHogre());
+			}
+		}
+		return svar;
+		
+	}	
 
 	@Override
 	public T leggTil(T nyttElement) {
-		// Blir fylt inn på forelesning
-		return null;
+		
+		if(getRot() == null) {
+			setRot(new BinaerTreNode<T>(nyttElement));
+			return null;
+		} else {
+			return leggTil(nyttElement, getRot());
+		}
+	}
+	
+	public T leggTil(T nyttElement, BinaerTreNode<T>p) {
+		// Vet at p != null fordi metoden over fikser det
+		
+		T res = null;
+		int sml = nyttElement.compareTo(p.getElement());
+		
+		if(sml == 0) {
+			res = p.getElement();
+			p.setElement(nyttElement);
+		}
+		if(sml < 0) {
+			if(p.getVenstre() == null) { // Har funnet rett plass
+				BinaerTreNode<T> ny = new BinaerTreNode<>(nyttElement);
+				p.setVenstre(ny);
+			} else {
+				res = leggTil(nyttElement, p.getVenstre());
+			}
+		} else {
+			if(p.getHogre() == null) { 
+				BinaerTreNode<T> ny = new BinaerTreNode<>(nyttElement);
+				p.setHogre(ny);
+			} else {
+				res = leggTil(nyttElement, p.getHogre());
+			}
+		}
+		return res;
 	}
 
 	@Override
